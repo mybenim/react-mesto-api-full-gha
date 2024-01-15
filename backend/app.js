@@ -1,5 +1,4 @@
 require('dotenv').config();
-//console.log(process.env.NODE_ENV);
 
 const express = require('express');
 const mongoose = require('mongoose');
@@ -12,7 +11,7 @@ const errorHandler = require('./middlewares/errorHandler');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 
 const { PORT = 3000, DB_URL = 'mongodb://127.0.0.1:27017/mestodb' } = process.env;
-//console.log(process.env);
+
 const app = express();
 
 app.use(cors());
@@ -33,13 +32,11 @@ app.use(requestLogger);
 // подключаем rate-limiter
 app.use(limiter);
 
-
 app.get('/crash-test', () => {
   setTimeout(() => {
     throw new Error('Сервер сейчас упадёт');
   }, 0);
 });
-
 
 app.use('/', require('./routes/index'));
 

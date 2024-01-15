@@ -1,4 +1,6 @@
 const { HTTP_STATUS_OK, HTTP_STATUS_CREATED } = require('http2').constants;
+
+const { SECRET_KEY } = process.env;
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
@@ -9,7 +11,7 @@ const NotFoundError = require('../errors/NotFoundError');
 
 module.exports.getUsers = (req, res, next) => {
   User.find({}) // найти всех
-    .then((users) => res.send( users ))
+    .then((users) => res.send(users))
     .catch(next);
 };
 
@@ -46,7 +48,7 @@ module.exports.getUserById = (req, res, next) => {
       if (!user) {
         next(new NotFoundError('Пользователь не найден.'));
       } else {
-        res.send( user );
+        res.send(user);
       }
     })
     .catch((error) => {
@@ -97,7 +99,8 @@ module.exports.login = (req, res, next) => {
       // создадим токен
       const token = jwt.sign({ _id: user._id },
         process.env.NODE_ENV === 'production' ? SECRET_KEY : 'dev-secret',
-        { expiresIn: '7d' });
+        { expiresIn: '7d' }, // токен будет просрочен через семь дней после создания
+      );
       // вернём токен
       res.send({ token });
     })
@@ -112,6 +115,4 @@ module.exports.getMeUser = (req, res, next) => {
     .catch(next);
 };
 
-
-
- //const token = jwt.sign({ _id: user._id }, SECRET_KEY, { expiresIn: '7d' }); // токен будет просрочен через семь дней после создания
+// const token = jwt.sign({ _id: user._id }, SECRET_KEY, { expiresIn: '7d' });

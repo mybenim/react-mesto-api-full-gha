@@ -9,7 +9,7 @@
 
 ## Ссылки на проект
 
-IP-адрес 158.160.78.122
+IP 158.160.78.122
 
 Frontend https://inna.nomoredomainsmonster.ru
 
