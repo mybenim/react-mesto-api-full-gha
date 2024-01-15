@@ -97,10 +97,9 @@ module.exports.login = (req, res, next) => {
   return User.findUserByCredentials(email, password)
     .then((user) => {
       // создадим токен
-      const token = jwt.sign({ _id: user._id },
-        process.env.NODE_ENV === 'production' ? SECRET_KEY : 'dev-secret',
-        { expiresIn: '7d' }, // токен будет просрочен через семь дней после создания
-      );
+      const token = jwt.sign({ _id: user._id }, process.env.NODE_ENV === 'production' ? SECRET_KEY : 'dev-secret', { expiresIn: '7d' });
+      // токен будет просрочен через семь дней после создания
+
       // вернём токен
       res.send({ token });
     })
