@@ -33,6 +33,14 @@ app.use(requestLogger);
 // подключаем rate-limiter
 app.use(limiter);
 
+
+app.get('/crash-test', () => {
+  setTimeout(() => {
+    throw new Error('Сервер сейчас упадёт');
+  }, 0);
+});
+
+
 app.use('/', require('./routes/index'));
 
 // подключаем логгер ошибок

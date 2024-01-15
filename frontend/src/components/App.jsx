@@ -27,7 +27,7 @@ function App() {
   const [selectedCard, setSelectedCard] = useState({});
   const [isImagePopup, setIsImagePopup] = useState(false);
   const [isResultPopupOpen, setIsResultPopupOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(false);
 
   // Стэйты currentUser
   const [currentUser, setCurrentUser] = useState({});
@@ -74,14 +74,16 @@ function App() {
   }, [closeAllPopups, isOpen])
   
   useEffect(() => {
-    if (loggedIn)  {
-      Promise.all([api.getUserInfo(localStorage.jwt), api.getInitialCards(localStorage.jwt)])
+    const token = localStorage.jwt;
+    if (token) {
+      setIsLoading(true);
+      Promise.all([api.getUserInfo(token), api.getInitialCards(token)])
         .then(([userEmail, dataCards]) => {
-            setCurrentUser(userEmail)
-            setIsLoading(false)     
+            setCurrentUser(userEmail)    
             setCards(dataCards)
         })
         .catch((error) => console.error(`Ошибка при загрузке начальных данных ${error}`))
+        .finally(() => setIsLoading(false))
       }
         },[loggedIn])
 
@@ -108,18 +110,17 @@ function App() {
     if (localStorage.jwt) {
       getUserInfo(localStorage.jwt)
        .then(res => {
-       //console.log(res)
+       console.log(res)
         setUserEmail(res.email)
         setLoggedIn(true)
         navigate("/")
        })
        .catch((error) => 
         console.error(`Ошибка авторизации при повторном входе ${error}`))
-    } else {
-        setLoggedIn(false)
-        //setIsCheckToken(false)  
+    } else { 
+        setLoggedIn(false)  
     }
-  }, []) 
+ }, [])   
 
   // При вызове обработчика onSignOut происходит удаление jwt 
  function onSignOut() {
@@ -165,7 +166,7 @@ function App() {
     }
 
   const handleLike = useCallback((card) => {
-      const isLike = card.likes.some(element => currentUser._id === element._id)
+      const isLike = card.likes.some(element => currentUser._id === element)
         if (isLike) {
           api.deleteLike(card._id, localStorage.jwt)
           .then((res) => {

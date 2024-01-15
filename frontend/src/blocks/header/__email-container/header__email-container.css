@@ -1,6 +1,7 @@
+ 
 .header__email-container {
   display: flex;
-  justify-content: end;
+  justify-content: eslint-disable-next-line end;
   align-items: center;
 }
 

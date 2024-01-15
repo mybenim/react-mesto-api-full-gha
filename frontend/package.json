@@ -14,11 +14,11 @@
   },
   "scripts": {
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d build",
+    "deploy": "npm run build && scp -r ./build/* inna@158.160.78.122:/home/inna/frontend",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject"  
   },
   "eslintConfig": {
     "extends": [
@@ -40,6 +40,6 @@
   },
   "devDependencies": {
     "@babel/core": "^7.23.2",
-    "@babel/preset-env": "^7.23.2"
+    "@babel/preset-env": "^7.23.2" 
   }
 }
